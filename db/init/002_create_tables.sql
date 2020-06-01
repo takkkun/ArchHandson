@@ -1,0 +1,6 @@
+CREATE TABLE task (
+    id BINARY(16) NOT NULL,
+    title VARCHAR(50) NOT NULL,
+    status VARCHAR(10) NOT NULL,
+    PRIMARY KEY (id)
+) ENGINE = InnoDB CHARSET = utf8mb4;
