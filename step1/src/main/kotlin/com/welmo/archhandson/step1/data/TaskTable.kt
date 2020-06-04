@@ -1,7 +1,6 @@
 package com.welmo.archhandson.step1.data
 
 import com.welmo.archhandson.step1.model.Task
-import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
@@ -18,14 +17,26 @@ object TaskTable : Table("task") {
 
     override val primaryKey = PrimaryKey(id)
 
-    fun list(): List<ResultRow> {
+    fun list(): List<Task> {
         val query = selectAll()
-        return query.toList()
+        return query.map { row ->
+            Task(
+                id = row[TaskTable.id],
+                title = row[TaskTable.title],
+                status = row[TaskTable.status]
+            )
+        }
     }
 
-    fun get(id: UUID): ResultRow {
+    fun get(id: UUID): Task {
         val query = select { TaskTable.id eq id }
-        return query.first()
+        return query.map { row ->
+            Task(
+                id = row[TaskTable.id],
+                title = row[TaskTable.title],
+                status = row[TaskTable.status]
+            )
+        }.first()
     }
 
     fun create(task: Task) {

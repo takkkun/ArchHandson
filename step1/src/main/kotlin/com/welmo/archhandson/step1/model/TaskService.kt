@@ -10,24 +10,12 @@ class TaskService {
 
     @Transactional(readOnly = true)
     fun list(): List<Task> {
-        val rows = TaskTable.list()
-        return rows.map { row ->
-            Task(
-                id = row[TaskTable.id],
-                title = row[TaskTable.title],
-                status = row[TaskTable.status]
-            )
-        }
+        return TaskTable.list()
     }
 
     @Transactional(readOnly = true)
     fun get(id: UUID): Task {
-        val row = TaskTable.get(id)
-        return Task(
-            id = row[TaskTable.id],
-            title = row[TaskTable.title],
-            status = row[TaskTable.status]
-        )
+        return TaskTable.get(id)
     }
 
     @Transactional(readOnly = false)
@@ -43,12 +31,7 @@ class TaskService {
 
     @Transactional(readOnly = false)
     fun close(id: UUID): UUID {
-        val row = TaskTable.get(id)
-        val task = Task(
-            id = row[TaskTable.id],
-            title = row[TaskTable.title],
-            status = row[TaskTable.status]
-        )
+        val task = TaskTable.get(id)
         if (task.status != "OPENED") {
             throw RuntimeException("Task(${task.id}) is not opened. You can close only an opened task")
         }
